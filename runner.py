@@ -1,2 +1,2 @@
 import tool
-tool.run_app()
+tool.main_menu()
