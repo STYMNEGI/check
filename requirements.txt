@@ -4,3 +4,4 @@ requests
 selenium
 urllib3
 webdriver-manager
+cryptography
