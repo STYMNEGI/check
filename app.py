@@ -32,20 +32,24 @@ def signup():
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-        user_id = db.verify_user(username, password)
-        if user_id:
-            session["logged_in"] = True
-            session["user_id"] = user_id
-            session["username"] = username
-            return redirect(url_for("dashboard"))
+        if username and password:
+            user_id = db.verify_user(username, password)
+            if user_id:
+                session["logged_in"] = True
+                session["user_id"] = user_id
+                session["username"] = username
+                return redirect(url_for("dashboard"))
+            else:
+                error = "❌ Invalid username or password!"
+        else:
+            error = "⚠️ Please enter both username and password"
+    return render_template("login.html", error=error)
 
-        return render_template("login.html", error="Invalid username or password")
-
-    return render_template("login.html")
 
 
 @app.route("/dashboard")
@@ -61,4 +65,5 @@ def dashboard():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
