@@ -4,11 +4,12 @@ from pathlib import Path
 from cryptography.fernet import Fernet
 import os
 
-BASE_DATA_DIR = Path("/data")
+BASE_DATA_DIR = Path(__file__).parent / "data"
 BASE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 DB_PATH = BASE_DATA_DIR / "users.db"
 ENCRYPTION_KEY_FILE = BASE_DATA_DIR / ".encryption_key"
+
 
 
 def get_encryption_key():
