@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta http-equiv="refresh" content="5">
+</head>
+<body>
+
+<h2>Welcome {{ username }}</h2>
+
+<p>Status:
+{% if state.running %}
+🟢 RUNNING
+{% else %}
+🔴 STOPPED
+{% endif %}
+</p>
+
+<p>Messages Sent: {{ state.message_count }}</p>
+
+<form method="post" action="/start">
+    <button {% if state.running %}disabled{% endif %}>▶ START</button>
+</form>
+
+<form method="post" action="/stop">
+    <button {% if not state.running %}disabled{% endif %}>⏹ STOP</button>
+</form>
+
+<h3>Logs</h3>
+<div class="console-output">
+{% for log in state.logs[-30:] %}
+    <div class="console-line">{{ log }}</div>
+{% endfor %}
+</div>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>
