@@ -1,82 +1,57 @@
-from flask import Flask, render_template, request, redirect, session, url_for
-import threading
+from flask import Flask, render_template, request, redirect, url_for, session
 import database as db
-from automation import get_state, run_automation_with_notification
 
 app = Flask(__name__)
 app.secret_key = "CHANGE_THIS_SECRET"
 
-def logged_in():
-    return session.get("logged_in", False)
-
 @app.route("/", methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        username = request.form["username"]
+        password = request.form["password"]
 
         user_id = db.verify_user(username, password)
         if user_id:
             session["logged_in"] = True
             session["user_id"] = user_id
             session["username"] = username
-            return redirect("/dashboard")
+            return redirect(url_for("dashboard"))
 
         return render_template("login.html", error="Invalid username or password")
 
     return render_template("login.html")
 
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        confirm = request.form["confirm"]
+
+        if password != confirm:
+            return render_template("signup.html", error="Passwords do not match")
+
+        success, message = db.create_user(username, password)
+        if success:
+            return redirect(url_for("login"))
+        else:
+            return render_template("signup.html", error=message)
+
+    return render_template("signup.html")
+
+
 @app.route("/dashboard")
 def dashboard():
-    if not logged_in():
-        return redirect("/")
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
 
-    user_id = session["user_id"]
-    user_config = db.get_user_config(user_id)
-    state = get_state(user_id)
+    user_config = db.get_user_config(session["user_id"])
+    return render_template("dashboard.html", user_config=user_config)
 
-    return render_template(
-        "dashboard.html",
-        username=session["username"],
-        user_id=user_id,
-        config=user_config,
-        state=state
-    )
-
-@app.route("/start", methods=["POST"])
-def start():
-    if not logged_in():
-        return redirect("/")
-
-    user_id = session["user_id"]
-    config = db.get_user_config(user_id)
-    state = get_state(user_id)
-
-    if not state.running:
-        state.running = True
-        t = threading.Thread(
-            target=run_automation_with_notification,
-            args=(config, session["username"], state, user_id)
-        )
-        t.daemon = True
-        t.start()
-
-    return redirect("/dashboard")
-
-@app.route("/stop", methods=["POST"])
-def stop():
-    user_id = session["user_id"]
-    state = get_state(user_id)
-    state.running = False
-    db.set_automation_running(user_id, False)
-    return redirect("/dashboard")
 
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/")
-
-if __name__ == "__main__":
-    pass
-
-
+    return redirect(url_for("login"))
