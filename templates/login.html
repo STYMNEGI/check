@@ -17,6 +17,12 @@
     <button type="submit">LOGIN</button>
 </form>
 
+<!-- ✅ ADD THIS PART -->
+<p class="signup-link">
+    Don’t have an account?
+    <a href="{{ url_for('signup') }}">Create one</a>
+</p>
+
 {% if error %}
 <div class="error-box">{{ error }}</div>
 {% endif %}
