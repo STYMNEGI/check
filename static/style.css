@@ -1,0 +1,176 @@
+custom_css = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* 📌 LIGHT BEAUTIFUL BACKGROUND */
+.stApp {
+    background: linear-gradient(135deg, #f4f9ff 0%, #e9f3ff 40%, #e1f0ff 100%);
+    background-attachment: fixed;
+    color: #333 !important;
+}
+
+/* 📌 MAIN CONTAINER – PREMIUM TILE BOX */
+.main .block-container {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 28px;
+    padding: 40px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    animation: smoothFade 0.5s ease;
+}
+
+@keyframes smoothFade {
+    from {opacity: 0; transform: translateY(12px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* 📌 HEADER MODERN TILE */
+.main-header {
+    background: linear-gradient(135deg, #ffffff, #f0f8ff, #e7f3ff);
+    border-radius: 25px;
+    padding: 50px 25px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 140, 255, 0.12);
+    border: 1px solid rgba(0, 140, 255, 0.15);
+}
+
+.main-header h1 {
+    color: #0077ff;
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.main-header p {
+    color: #005fcc;
+    font-size: 1.2rem;
+    opacity: 0.85;
+}
+
+/* 📌 INPUT FIELDS */
+.stTextInput>div>div>input,
+.stTextArea>div>div>textarea {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1.5px solid #cfe4ff;
+    color: #333;
+    font-size: 1rem;
+    transition: 0.2s ease;
+}
+
+.stTextInput>div>div>input:focus {
+    border-color: #0078ff;
+    box-shadow: 0 0 12px rgba(0,120,255,0.3);
+}
+
+label {
+    color: #006be8 !important;
+    font-weight: 700 !important;
+}
+
+/* 📌 BUTTON — PREMIUM GLOSSY */
+.stButton>button {
+    background: linear-gradient(135deg, #009dff 0%, #006bff 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    border-radius: 14px;
+    border: none;
+    transition: 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,100,255,0.25);
+}
+.stButton>button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,100,255,0.35);
+}
+
+/* 📌 TABS – CLEAN WHITE */
+.stTabs [data-baseweb="tab-list"] {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: #f4f9ff;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    color: #0077ff;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.stTabs [aria-selected="true"] {
+    background: #0077ff;
+    color: white;
+    box-shadow: 0 0 14px rgba(0,100,255,0.4);
+}
+
+/* 📌 ICON STYLING – PREMIUM LOOK */
+i, svg {
+    width: 26px !important;
+    height: 26px !important;
+    padding: 10px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff, #eaf3ff);
+    box-shadow: 0 4px 15px rgba(0,100,255,0.2);
+    border: 1px solid rgba(0, 120, 255, 0.15);
+    fill: #006bff !important;
+}
+
+/* 📌 CONSOLE */
+.console-output {
+    background: #ffffff;
+    border: 2px solid #b7d9ff;
+    border-radius: 15px;
+    padding: 20px;
+    font-family: "Consolas";
+    max-height: 400px;
+    color: #005fcc;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,100,255,0.15);
+}
+
+.console-line {
+    background: #eef6ff;
+    padding: 10px;
+    border-left: 4px solid #0077ff;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* 📌 SUCCESS / ERROR BOX */
+.success-box {
+    background: linear-gradient(135deg, #c7ffea, #9dffe0);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    color: #007f5b;
+    font-weight: 700;
+}
+.error-box {
+    background: linear-gradient(135deg, #ffe1e1, #ffd4d4);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    color: #b10000;
+    font-weight: 700;
+}
+
+/* 📌 FOOTER */
+.footer {
+    text-align: center;
+    color: #0077ff;
+    font-weight: 800;
+    margin-top: 2rem;
+    padding: 1.5rem;
+}
+</style>
+"""
+st.markdown(custom_css, unsafe_allow_html=True)
