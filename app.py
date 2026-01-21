@@ -32,24 +32,29 @@ def signup():
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    error = None
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username and password:
-            user_id = db.verify_user(username, password)
-            if user_id:
-                session["logged_in"] = True
-                session["user_id"] = user_id
-                session["username"] = username
-                return redirect(url_for("dashboard"))
-            else:
-                error = "❌ Invalid username or password!"
+        username = request.form["username"]
+        password = request.form["password"]
+        user_id = db.verify_user(username, password)
+        if user_id:
+            session["logged_in"] = True
+            session["user_id"] = user_id
+            session["username"] = username
+            flash(f"✅ Welcome back, {username}!")
+            return redirect(url_for("home"))
         else:
-            error = "⚠️ Please enter both username and password"
-    return render_template("login.html", error=error)
+            flash("❌ Invalid username or password!")
 
+    return render_template("login.html")
+
+
+@app.route("/home")
+def home():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+
+    user_config = db.get_user_config(session["user_id"])
+    return render_template("home.html", user_config=user_config)
 
 
 @app.route("/dashboard")
@@ -65,6 +70,7 @@ def dashboard():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
 
 
