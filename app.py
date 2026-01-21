@@ -62,14 +62,41 @@ def dashboard():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
 
-    user_config = db.get_user_config(session["user_id"])
-    return render_template("dashboard.html", user_config=user_config)
+    user_id = session["user_id"]
+    username = session["username"]
 
+    # get automation state from your database or in-memory tracking
+    running = db.get_automation_running(user_id)
+    logs = automation_states.get(user_id, {}).get("logs", [])
+    message_count = automation_states.get(user_id, {}).get("message_count", 0)
+
+    state = {
+        "running": running,
+        "logs": logs,
+        "message_count": message_count
+    }
+
+    return render_template("dashboard.html", username=username, state=state)
+
+@app.route("/start", methods=["POST"])
+def start():
+    user_id = session["user_id"]
+    # start automation logic here
+    db.set_automation_running(user_id, True)
+    # optionally update logs/message_count in automation_states
+    return redirect(url_for("dashboard"))
+
+@app.route("/stop", methods=["POST"])
+def stop():
+    user_id = session["user_id"]
+    db.set_automation_running(user_id, False)
+    return redirect(url_for("dashboard"))
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
 
 
