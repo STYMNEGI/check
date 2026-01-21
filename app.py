@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, session
 import database as db  # your db.py file
 
 app = Flask(__name__)
-app.secret_key = "some_secret_key"  # needed for flash messages
+app.secret_key = "Jam-Shahrukh"  # needed for flash messages
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -65,5 +65,6 @@ def dashboard():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
 
