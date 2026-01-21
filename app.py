@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import database as db  # your db.py file
 
 app = Flask(__name__)
@@ -65,6 +65,7 @@ def dashboard():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
 
 
