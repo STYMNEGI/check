@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome, {{ session.username }}</h1>
+    <p>Your chat ID: {{ user_config.chat_id }}</p>
+    <p>Automation running: {{ 'Yes' if user_config.automation_running else 'No' }}</p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>
